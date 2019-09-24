@@ -151,4 +151,20 @@ class CreatePostTest extends TestCase
 
         $this->assertEquals('New: ' . 'A valid title', $post->title);
     }
+
+    /** @test */
+    function creating_a_post_will_capitalize_the_title()
+    {
+        $author = factory(User::class)->create();
+
+        $this->actingAs($author)->post(route('posts.store'), [
+            'title' => 'some title that was not capitalized',
+            'body' => 'A valid body',
+        ]);
+
+        $post = Post::first();
+
+        // 'New: ' was added by our even listener
+        $this->assertEquals('New: Some title that was not capitalized', $post->title);
+    }
 }

@@ -2,8 +2,11 @@
 
 namespace JohnDoe\BlogPackage;
 
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use JohnDoe\BlogPackage\Console\InstallBlogPackage;
+use JohnDoe\BlogPackage\Http\Middleware\CapitalizeTitle;
 use JohnDoe\BlogPackage\Providers\EventServiceProvider;
 
 class BlogPackageServiceProvider extends ServiceProvider
@@ -29,6 +32,15 @@ class BlogPackageServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'../../routes/web.php');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'blogpackage');
+
+        // Register a global middleware
+//        $kernel = $this->app->make(Kernel::class);
+//        $kernel->pushMiddleware(CapitalizeTitle::class);
+
+        // Register a route specific middleware
+        $router = $this->app->make(Router::class);
+        $router->aliasMiddleware('capitalize', CapitalizeTitle::class);
+
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
