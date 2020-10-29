@@ -7,10 +7,10 @@ use JohnDoe\BlogPackage\Models\Post;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('capitalize');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('capitalize');
+//    }
 
     public function index()
     {

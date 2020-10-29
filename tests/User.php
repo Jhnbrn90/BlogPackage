@@ -3,6 +3,7 @@
 namespace JohnDoe\BlogPackage\Tests;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -11,9 +12,14 @@ use JohnDoe\BlogPackage\Traits\HasPosts;
 
 class User extends Model implements AuthorizableContract, AuthenticatableContract
 {
-    use HasPosts, Authorizable, Authenticatable;
+    use HasPosts, Authorizable, Authenticatable, HasFactory;
 
     protected $guarded = [];
 
     protected $table = 'users';
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 }

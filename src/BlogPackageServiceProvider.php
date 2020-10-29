@@ -4,6 +4,7 @@ namespace JohnDoe\BlogPackage;
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use JohnDoe\BlogPackage\Console\InstallBlogPackage;
 use JohnDoe\BlogPackage\Http\Middleware\CapitalizeTitle;
@@ -21,25 +22,22 @@ class BlogPackageServiceProvider extends ServiceProvider
     public function boot()
     {
         // Register a Facade
-        $this->app->bind('calculator', function($app) {
-            return new Calculator();
-        });
+//        $this->app->bind('calculator', function ($app) {
+//            return new Calculator();
+//        });
 
-        // Register the model factories
-        $this->app->make('Illuminate\Database\Eloquent\Factory')
-            ->load(__DIR__.'/../database/factories');
-
-        $this->loadRoutesFrom(__DIR__.'../../routes/web.php');
+        $this->registerRoutes();
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'blogpackage');
 
-        // Register a global middleware
-//        $kernel = $this->app->make(Kernel::class);
-//        $kernel->pushMiddleware(CapitalizeTitle::class);
-
-        // Register a route specific middleware
-        $router = $this->app->make(Router::class);
-        $router->aliasMiddleware('capitalize', CapitalizeTitle::class);
+//        // Register a global middleware
+        $kernel = $this->app->make(Kernel::class);
+        $kernel->pushMiddleware(CapitalizeTitle::class);
+//
+//        // Register a route specific middleware
+//        $router = $this->app->make(Router::class);
+//        $router->aliasMiddleware('capitalize', CapitalizeTitle::class);
+//        $router->pushMiddlewareToGroup('web', CapitalizeTitle::class);
 
 
         if ($this->app->runningInConsole()) {
@@ -66,5 +64,20 @@ class BlogPackageServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/assets' => public_path('blogpackage'),
             ], 'assets');
         }
+    }
+
+    public function registerRoutes()
+    {
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__.'../../routes/web.php');
+        });
+    }
+
+    public function routeConfiguration()
+    {
+        return [
+            'prefix' => config('blogpackage.prefix'),
+            'middleware' => config('blogpackage.middleware'),
+        ];
     }
 }

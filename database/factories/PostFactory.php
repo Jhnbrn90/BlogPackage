@@ -2,17 +2,30 @@
 
 namespace JohnDoe\BlogPackage\Database\Factories;
 
-use Faker\Generator as Faker;
 use JohnDoe\BlogPackage\Models\Post;
-use JohnDoe\BlogPackage\Tests\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Post::class, function (Faker $faker) {
-    $author = factory(User::class)->create();
+class PostFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Post::class;
 
-    return [
-        'title'         => $faker->title,
-        'body'          => $faker->paragraph,
-        'author_id'     => $author->id,
-        'author_type'   => get_class($author),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'title'     => $this->faker->title,
+            'body'      => $this->faker->paragraph,
+            'author_id' => 999,
+            'author_type' => 'Fake\Author',
+        ];
+    }
+}

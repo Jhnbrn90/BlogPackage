@@ -14,28 +14,28 @@ class PostTest extends TestCase
     /** @test */
     function a_post_has_a_title()
     {
-        $post = factory(Post::class)->create(['title' => 'Fake Title']);
+        $post = Post::factory()->create(['title' => 'Fake Title']);
         $this->assertEquals('Fake Title', $post->title);
     }
 
     /** @test */
     function a_post_has_a_body()
     {
-        $post = factory(Post::class)->create(['body' => 'Fake Body']);
+        $post = Post::factory()->create(['body' => 'Fake Body']);
         $this->assertEquals('Fake Body', $post->body);
     }
 
     /** @test */
     function a_post_has_an_author_id()
     {
-        $post = factory(Post::class)->create(['author_id' => 999]);
+        $post = Post::factory()->create(['author_id' => 999]);
         $this->assertEquals(999, $post->author_id);
     }
 
     /** @test */
     function a_post_has_an_author_type()
     {
-        $post = factory(Post::class)->create(['author_type' => 'Fake\User']);
+        $post = Post::factory()->create(['author_type' => 'Fake\User']);
         $this->assertEquals('Fake\User', $post->author_type);
     }
 
@@ -44,7 +44,7 @@ class PostTest extends TestCase
     function a_post_belongs_to_an_author()
     {
         // Given we have an author
-        $author = factory(User::class)->create();
+        $author = User::factory()->create();
         // And this author has a Post
         $author->posts()->create([
             'title' => 'My first fake post',

@@ -21,7 +21,7 @@ class CreatePostTest extends TestCase
 
         $this->assertCount(0, Post::all());
 
-        $author = factory(User::class)->create();
+        $author = User::factory()->create();
 
         $response = $this->actingAs($author)->post(route('posts.store'), [
             'title' => 'My first fake title',
@@ -41,7 +41,7 @@ class CreatePostTest extends TestCase
     /** @test */
     function a_post_requires_a_title_and_a_body()
     {
-        $author = factory(User::class)->create();
+        $author = User::factory()->create();
 
         $this->actingAs($author)->post(route('posts.store'), [
             'title' => '',
@@ -70,13 +70,13 @@ class CreatePostTest extends TestCase
     function all_posts_are_shown_on_the_index_route()
     {
         // Given we have a couple of Posts
-        factory(Post::class)->create([
+        Post::factory()->create([
             'title' => 'Post number 1'
         ]);
-        factory(Post::class)->create([
+        Post::factory()->create([
             'title' => 'Post number 2'
         ]);
-        factory(Post::class)->create([
+        Post::factory()->create([
             'title' => 'Post number 3'
         ]);
 
@@ -92,7 +92,7 @@ class CreatePostTest extends TestCase
     /** @test */
     function a_single_post_can_be_viewed_on_the_show_route()
     {
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'title' => 'The single post title',
             'body' => 'The single post body',
         ]);
@@ -107,7 +107,7 @@ class CreatePostTest extends TestCase
     {
         Event::fake();
 
-        $author = factory(User::class)->create();
+        $author = User::factory()->create();
 
         $this->actingAs($author)->post(route('posts.store'), [
             'title' => 'A valid title',
@@ -124,7 +124,7 @@ class CreatePostTest extends TestCase
     /** @test */
     function a_newly_created_posts_title_will_be_changed()
     {
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'title' => 'Initial title',
         ]);
 
@@ -140,7 +140,7 @@ class CreatePostTest extends TestCase
     /** @test */
     function the_title_of_a_post_is_updated_whenever_a_post_is_created()
     {
-        $author = factory(User::class)->create();
+        $author = User::factory()->create();
 
         $this->actingAs($author)->post(route('posts.store'), [
             'title' => 'A valid title',
@@ -155,7 +155,7 @@ class CreatePostTest extends TestCase
     /** @test */
     function creating_a_post_will_capitalize_the_title()
     {
-        $author = factory(User::class)->create();
+        $author = User::factory()->create();
 
         $this->actingAs($author)->post(route('posts.store'), [
             'title' => 'some title that was not capitalized',
